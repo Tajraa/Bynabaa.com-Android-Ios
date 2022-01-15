@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1004539314721",
+    "project_id": "bynabaa",
+    "storage_bucket": "bynabaa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1004539314721:android:39d916a67f07d463079960",
+        "android_client_info": {
+          "package_name": "com.progiom.Bynabaa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1004539314721-rvv0usqqflmh0hubt93o2r7hdcthc6ou.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.progiom.Bynabaa",
+            "certificate_hash": "7a58a81acc3f40565e09939317453330bddbc749"
+          }
+        },
+        {
+          "client_id": "1004539314721-uhguri5cj16503dcgj44k7uubqd8h073.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-6K5GV0Et-JvD47ITRzOiKeKO2sxhVAc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1004539314721-uhguri5cj16503dcgj44k7uubqd8h073.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
