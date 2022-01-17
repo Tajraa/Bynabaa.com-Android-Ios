@@ -82,9 +82,9 @@ class Repository {
         AppleIDAuthorizationScopes.fullName,
       ],
       webAuthenticationOptions: WebAuthenticationOptions(
-        clientId: 'demo1.tajraa.com',
+        clientId: "bynabaa.com",
         redirectUri: Uri.parse(
-          'https://demo1.tajraa.com/login/apple/callback',
+          'https://bynabaa.com/login/apple/callback',
         ),
       ),
     );
