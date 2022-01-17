@@ -2,8 +2,8 @@ require 'jwt'
 
 key_file = 'key.txt'
 team_id = '83M5ANFM22'
-client_id = 'Bynabaa.com'
-key_id = 'DVBY4WKCW4'
+client_id = 'com.progiom.Bynabaa'
+key_id = '5HJ6B5GKYK'
 
 ecdsa_key = OpenSSL::PKey::EC.new IO.read key_file
 
