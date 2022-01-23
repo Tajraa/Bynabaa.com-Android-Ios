@@ -292,29 +292,36 @@ class _LoginPageState extends State<LoginPage>
                         ),
                         buildSocialLogin(context),
                         Spacer(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            RichText(
-                                text: TextSpan(
-                                    text: S.of(context).dont_have_account,
-                                    style: TextStyle(
-                                            color: AppStyle.secondaryColor,
-                                            fontSize: SizeConfig.h(12))
-                                        .copyWith(fontFamily: "Almaria"),
-                                    children: [
-                                  TextSpan(
-                                      text: " " + S.of(context).singup + " ",
-                                      style: TextStyle(
-                                              color: AppStyle.primaryColor,
-                                              fontWeight: FontWeight.bold)
-                                          .copyWith(fontFamily: "Almaria"),
-                                      recognizer: tapGestureRecognizer),
-                                ]))
-                          ],
-                        ),
-                        SizedBox(
-                          height: SizeConfig.h(5),
+                        GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            _goToRegister();
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(6.7),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                RichText(
+                                    text: TextSpan(
+                                        text: S.of(context).dont_have_account,
+                                        style: TextStyle(
+                                                color: AppStyle.secondaryColor,
+                                                fontSize: SizeConfig.h(12))
+                                            .copyWith(fontFamily: "Almaria"),
+                                        children: [
+                                      TextSpan(
+                                          text:
+                                              " " + S.of(context).singup + " ",
+                                          style: TextStyle(
+                                                  color: AppStyle.primaryColor,
+                                                  fontWeight: FontWeight.bold)
+                                              .copyWith(fontFamily: "Almaria"),
+                                          recognizer: tapGestureRecognizer),
+                                    ]))
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     ),
