@@ -120,14 +120,7 @@ class _SplashContentState extends State<SplashContent> {
                   child: Container(
                     height: double.infinity,
                     width: double.infinity,
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                          AppStyle.secondaryLight,
-                          AppStyle.secondaryDark
-                        ])),
+                    decoration: BoxDecoration(color: Color(0xFF333333)),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
