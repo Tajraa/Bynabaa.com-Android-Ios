@@ -290,7 +290,7 @@ class _LoginPageState extends State<LoginPage>
                             )
                           ],
                         ),
-                       // buildSocialLogin(context),
+                        buildSocialLogin(context),
                         Spacer(),
                         GestureDetector(
                           behavior: HitTestBehavior.opaque,
