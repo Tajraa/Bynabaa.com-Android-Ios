@@ -4,12 +4,12 @@ import 'SizeConfig.dart';
 
 class AppStyle {
   static const Color whiteColor = Color(0xFFFFFFFF);
-  static const Color primaryColor = Color(0xff655034);
+  static const Color primaryColor = Color(0xff333333);
   static const Color grediantLightColor = Color(0xFFFDD192);
   static const Color secondaryColor = Color(0xFFD9AE73);
 
-  static const Color secondaryLight = Color(0xFFD9AE73);
-  static const Color secondaryDark = Color(0xFFD9AE73);
+  static const Color secondaryLight = Color(0xFF333333);
+  static const Color secondaryDark = Color(0xFF333333);
   static const Color backgroundColor = Color(0xFFfcfcfc);
   static const Color disabledColor = Color(0xFFC4C4C4);
   static const Color greyColor = Color(0xFF9B9B9B);

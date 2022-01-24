@@ -148,7 +148,7 @@ class _SplashContentState extends State<SplashContent> {
                       color: Colors.black.withOpacity(0.85),
                       child: SvgPicture.asset(
                         "assets/splashTop.svg",
-                        color: AppStyle.primaryColor,
+                        color: AppStyle.secondaryColor,
                         height: SizeConfig.h(420),
                         width: SizeConfig.h(600),
                       ),
@@ -167,7 +167,7 @@ class _SplashContentState extends State<SplashContent> {
                       color: Colors.black.withOpacity(0.85),
                       child: SvgPicture.asset(
                         "assets/splashBottom.svg",
-                        color: AppStyle.primaryColor,
+                        color: AppStyle.secondaryColor,
                         height: SizeConfig.h(420),
                         width: SizeConfig.w(600),
                       ),

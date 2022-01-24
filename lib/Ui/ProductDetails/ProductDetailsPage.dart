@@ -306,7 +306,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                     Column(
                                       children: [
                                         Text(
-                                          product.priceText,
+                                          product.presalePriceText??"",
                                           style: AppStyle.yaroCut14.copyWith(
                                               fontSize: SizeConfig.h(12),
                                               fontFamily:
@@ -320,7 +320,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                               color: AppStyle.redColor),
                                         ),
                                         Text(
-                                          product.presalePriceText ?? '',
+                                          product.priceText ,
                                           style: AppStyle.yaroCut14.copyWith(
                                               fontFamily: AppStyle
                                                   .priceFontFamily(product

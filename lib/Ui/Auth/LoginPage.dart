@@ -98,7 +98,7 @@ class _LoginPageState extends State<LoginPage>
                 child: SingleChildScrollView(
                   child: SizedBox(
                     height:
-                        SizeConfig.screenHeight + ((Platform.isIOS) ? 45 : 0),
+                        SizeConfig.screenHeight + ((Platform.isIOS) ? 90 : 0),
                     child: Column(
                       children: [
                         SizedBox(
@@ -318,11 +318,13 @@ class _LoginPageState extends State<LoginPage>
                                                   fontWeight: FontWeight.bold)
                                               .copyWith(fontFamily: "Almaria"),
                                           recognizer: tapGestureRecognizer),
-                                    ]))
+                                    ])),
+
                               ],
                             ),
                           ),
                         ),
+                        SizedBox(height: 15,)
                       ],
                     ),
                   ),

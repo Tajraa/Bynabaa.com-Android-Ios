@@ -40,7 +40,7 @@ class CustomAppBar extends StatelessWidget {
                     ? IconButton(
                         icon: Icon(
                           Icons.notifications,
-                          color: AppStyle.primaryColor,
+                          color: AppStyle.secondaryColor,
                           size: SizeConfig.h(24),
                         ),
                         onPressed: () {
@@ -68,7 +68,7 @@ class CustomAppBar extends StatelessWidget {
                         child: IconButton(
                             icon: Icon(
                               Icons.notifications,
-                              color: AppStyle.primaryColor,
+                              color: AppStyle.secondaryColor,
                               size: SizeConfig.h(24),
                             ),
                             onPressed: () {
@@ -94,7 +94,7 @@ class CustomAppBar extends StatelessWidget {
                     
                     icon: Icon(
                       Icons.search,
-                      color: AppStyle.primaryColor,
+                      color: AppStyle.secondaryColor,
                       size: SizeConfig.h(24),
                     ),
                     onPressed: () {
