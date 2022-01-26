@@ -72,6 +72,7 @@ class _LoginPageState extends State<LoginPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(backgroundColor: AppStyle.secondaryColor, elevation: 0.0),
       body: DefaultTabController(
         length: 2,
         child: Form(
@@ -97,13 +98,10 @@ class _LoginPageState extends State<LoginPage>
                 padding: EdgeInsets.symmetric(horizontal: SizeConfig.h(24)),
                 child: SingleChildScrollView(
                   child: SizedBox(
-                    height:
-                        SizeConfig.screenHeight + ((Platform.isIOS) ? 90 : 0),
+                    height: (SizeConfig.screenHeight - SizeConfig.h(65)) +
+                        ((Platform.isIOS) ? 90 : 0),
                     child: Column(
                       children: [
-                        SizedBox(
-                          height: SizeConfig.screenHeight * 0.1,
-                        ),
                         Row(
                           children: [
                             Expanded(
@@ -133,63 +131,62 @@ class _LoginPageState extends State<LoginPage>
                           child: Stack(
                             children: [
                               AnimatedContainer(
-                                duration: const Duration(milliseconds: 250),
-                                padding: EdgeInsets.all(SizeConfig.h(28)),
-                                height: SizeConfig.h(isSignUp ? 400 : 382),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black12,
-                                          offset: Offset(0.0, 3.0),
-                                          blurRadius: 20)
-                                    ],
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Column(
-                                      children: [
-                                        TabBar(
+                                  duration: const Duration(milliseconds: 250),
+                                  padding: EdgeInsets.all(SizeConfig.h(28)),
+                                  height: SizeConfig.h(isSignUp ? 400 : 382),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: Colors.black12,
+                                            offset: Offset(0.0, 3.0),
+                                            blurRadius: 20)
+                                      ],
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Column(
+                                    children: [
+                                      TabBar(
+                                        controller: _controller,
+                                        isScrollable: true,
+                                        indicatorColor: Colors.orange,
+                                        labelColor: AppStyle.secondaryColor,
+                                        unselectedLabelColor:
+                                            AppStyle.disabledColor,
+                                        indicatorSize:
+                                            TabBarIndicatorSize.label,
+                                        labelStyle: AppStyle.vexa14
+                                            .copyWith(fontFamily: "Almaria"),
+                                        unselectedLabelStyle: AppStyle.vexa14
+                                            .copyWith(fontFamily: "Almaria"),
+                                        tabs: [
+                                          Tab(
+                                            text: "   " +
+                                                S.of(context).login +
+                                                "   ",
+                                          ),
+                                          Tab(
+                                            text: "   " +
+                                                S.of(context).create_account +
+                                                "   ",
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: SizeConfig.h(25),
+                                      ),
+                                      Expanded(
+                                        child: TabBarView(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
                                           controller: _controller,
-                                          isScrollable: true,
-                                          indicatorColor: Colors.orange,
-                                          labelColor: AppStyle.secondaryColor,
-                                          unselectedLabelColor:
-                                              AppStyle.disabledColor,
-                                          indicatorSize:
-                                              TabBarIndicatorSize.label,
-                                          labelStyle: AppStyle.vexa14
-                                              .copyWith(fontFamily: "Almaria"),
-                                          unselectedLabelStyle: AppStyle.vexa14
-                                              .copyWith(fontFamily: "Almaria"),
-                                          tabs: [
-                                            Tab(
-                                              text: "   " +
-                                                  S.of(context).login +
-                                                  "   ",
-                                            ),
-                                            Tab(
-                                              text: "   " +
-                                                  S.of(context).create_account +
-                                                  "   ",
-                                            )
+                                          children: [
+                                            buildLoginDialoge(),
+                                            buildSignUpDialoge(),
                                           ],
                                         ),
-                                        SizedBox(
-                                          height: SizeConfig.h(25),
-                                        ),
-                                        Expanded(
-                                          child: TabBarView(
-                                            physics:
-                                                NeverScrollableScrollPhysics(),
-                                            controller: _controller,
-                                            children: [
-                                              buildLoginDialoge(),
-                                              buildSignUpDialoge(),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    )),
-                              
+                                      ),
+                                    ],
+                                  )),
                               Align(
                                 alignment: Alignment.bottomCenter,
                                 child: GestureDetector(
