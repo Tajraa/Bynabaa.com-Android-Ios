@@ -145,9 +145,7 @@ class _LoginPageState extends State<LoginPage>
                                           blurRadius: 20)
                                     ],
                                     borderRadius: BorderRadius.circular(10)),
-                                child: Scaffold(
-                                    backgroundColor: Colors.white,
-                                    body: Column(
+                                child: Column(
                                       children: [
                                         TabBar(
                                           controller: _controller,
@@ -191,7 +189,7 @@ class _LoginPageState extends State<LoginPage>
                                         ),
                                       ],
                                     )),
-                              ),
+                              
                               Align(
                                 alignment: Alignment.bottomCenter,
                                 child: GestureDetector(
