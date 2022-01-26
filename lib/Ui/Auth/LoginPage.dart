@@ -147,42 +147,53 @@ class _LoginPageState extends State<LoginPage>
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Scaffold(
                                     backgroundColor: Colors.white,
-                                    appBar: AppBar(
-                                      automaticallyImplyLeading: false,
-                                      backgroundColor: Colors.white,
-                                      elevation: 0.0,
-                                      flexibleSpace: TabBar(
-                                        controller: _controller,
-                                        isScrollable: true,
-                                        indicatorColor: Colors.orange,
-                                        indicatorSize:
-                                            TabBarIndicatorSize.label,
-                                        tabs: [
-                                          Tab(
-                                              child: Text(
-                                            S.of(context).login,
-                                            style: AppStyle.vexa14.copyWith(
-                                                color: isSignUp
-                                                    ? AppStyle.disabledColor
-                                                    : AppStyle.secondaryColor),
-                                          )),
-                                          Tab(
-                                              child: Text(
-                                            S.of(context).create_account,
-                                            style: AppStyle.vexa14.copyWith(
-                                                color: !isSignUp
-                                                    ? AppStyle.disabledColor
-                                                    : AppStyle.secondaryColor),
-                                          )),
-                                        ],
-                                      ),
-                                    ),
-                                    body: TabBarView(
-                                      physics: NeverScrollableScrollPhysics(),
-                                      controller: _controller,
+                                    body: Column(
                                       children: [
-                                        buildLoginDialoge(),
-                                        buildSignUpDialoge(),
+                                        TabBar(
+                                          controller: _controller,
+                                          isScrollable: true,
+                                          indicatorColor: Colors.orange,
+                                          indicatorSize:
+                                              TabBarIndicatorSize.label,
+                                          tabs: [
+                                            Tab(
+                                                child: Text(
+                                              "   " +
+                                                  S.of(context).login +
+                                                  "   ",
+                                              style: AppStyle.vexa14.copyWith(
+                                                  color: isSignUp
+                                                      ? AppStyle.disabledColor
+                                                      : AppStyle
+                                                          .secondaryColor),
+                                            )),
+                                            Tab(
+                                                child: Text(
+                                              "   " +
+                                                  S.of(context).create_account +
+                                                  "   ",
+                                              style: AppStyle.vexa14.copyWith(
+                                                  color: !isSignUp
+                                                      ? AppStyle.disabledColor
+                                                      : AppStyle
+                                                          .secondaryColor),
+                                            )),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: SizeConfig.h(25),
+                                        ),
+                                        Expanded(
+                                          child: TabBarView(
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            controller: _controller,
+                                            children: [
+                                              buildLoginDialoge(),
+                                              buildSignUpDialoge(),
+                                            ],
+                                          ),
+                                        ),
                                       ],
                                     )),
                               ),
@@ -319,12 +330,13 @@ class _LoginPageState extends State<LoginPage>
                                               .copyWith(fontFamily: "Almaria"),
                                           recognizer: tapGestureRecognizer),
                                     ])),
-
                               ],
                             ),
                           ),
                         ),
-                        SizedBox(height: 15,)
+                        SizedBox(
+                          height: 15,
+                        )
                       ],
                     ),
                   ),
