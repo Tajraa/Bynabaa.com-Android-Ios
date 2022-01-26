@@ -99,7 +99,7 @@ class _LoginPageState extends State<LoginPage>
                 child: SingleChildScrollView(
                   child: SizedBox(
                     height: (SizeConfig.screenHeight - SizeConfig.h(65)) +
-                        ((Platform.isIOS) ? 90 : 0),
+                        ((Platform.isIOS) ? 80 : 0),
                     child: Column(
                       children: [
                         Row(
@@ -292,7 +292,7 @@ class _LoginPageState extends State<LoginPage>
                           ],
                         ),
                         buildSocialLogin(context),
-                        Spacer(),
+                        // Spacer(),
                         GestureDetector(
                           behavior: HitTestBehavior.opaque,
                           onTap: () {
