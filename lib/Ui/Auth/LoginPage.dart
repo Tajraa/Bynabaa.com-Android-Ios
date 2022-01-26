@@ -153,31 +153,26 @@ class _LoginPageState extends State<LoginPage>
                                           controller: _controller,
                                           isScrollable: true,
                                           indicatorColor: Colors.orange,
+                                          labelColor: AppStyle.secondaryColor,
+                                          unselectedLabelColor:
+                                              AppStyle.disabledColor,
                                           indicatorSize:
                                               TabBarIndicatorSize.label,
+                                          labelStyle: AppStyle.vexa14
+                                              .copyWith(fontFamily: "Almaria"),
+                                          unselectedLabelStyle: AppStyle.vexa14
+                                              .copyWith(fontFamily: "Almaria"),
                                           tabs: [
                                             Tab(
-                                                child: Text(
-                                              "   " +
+                                              text: "   " +
                                                   S.of(context).login +
                                                   "   ",
-                                              style: AppStyle.vexa14.copyWith(
-                                                  color: isSignUp
-                                                      ? AppStyle.disabledColor
-                                                      : AppStyle
-                                                          .secondaryColor),
-                                            )),
+                                            ),
                                             Tab(
-                                                child: Text(
-                                              "   " +
+                                              text: "   " +
                                                   S.of(context).create_account +
                                                   "   ",
-                                              style: AppStyle.vexa14.copyWith(
-                                                  color: !isSignUp
-                                                      ? AppStyle.disabledColor
-                                                      : AppStyle
-                                                          .secondaryColor),
-                                            )),
+                                            )
                                           ],
                                         ),
                                         SizedBox(
