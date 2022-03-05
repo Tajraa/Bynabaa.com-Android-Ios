@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:progiom_cms/auth.dart';
+import 'package:progiom_cms/core.dart';
 import 'package:progiom_cms/homeSettings.dart';
 import 'package:tajra/Ui/BasePage/BasePage.dart';
+import '../../Utils/AppSnackBar.dart';
 import '../../Utils/SizeConfig.dart';
 import '../../Utils/Style.dart';
 import 'package:badges/badges.dart';
@@ -11,13 +13,37 @@ import 'LoginDialoge.dart';
 
 final GlobalKey searchNavKey = GlobalKey();
 
-class CustomAppBar extends StatelessWidget {
+class CustomAppBar extends StatefulWidget {
   const CustomAppBar({Key? key, required this.isCustom, this.child})
       : assert(isCustom ? child != null : true,
-            "child is null while isCustom is true!");
+  "child is null while isCustom is true!");
 
   final bool isCustom;
   final Widget? child;
+
+  @override
+  State<CustomAppBar> createState() => _CustomAppBarState();
+}
+
+class _CustomAppBarState extends State<CustomAppBar> {
+  Map? preferences;
+  getPreferences() async {
+    final result = await GetPreferences(sl()).call(NoParams());
+    result.fold((l) {
+      AppSnackBar.show(context, l.errorMessage, ToastType.Error);
+    }, (r) {
+      if (mounted)
+        setState(() {
+          preferences = r;
+        });
+    });
+  }
+
+  @override
+  void initState() {
+    getPreferences();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,76 +59,96 @@ class CustomAppBar extends StatelessWidget {
               colors: [AppStyle.secondaryDark, AppStyle.secondaryLight],
               begin: Alignment.centerLeft,
               end: Alignment.centerRight)),
-      child: !isCustom
+      child: !widget.isCustom
           ? Row(
+        children: [
+          unreadNotifications == 0
+              ? IconButton(
+              icon: Icon(
+                Icons.notifications,
+                color: AppStyle.secondaryColor,
+                size: SizeConfig.h(24),
+              ),
+              onPressed: () {
+                if (sl<AuthBloc>().isGuest) {
+                  showLoginDialoge(context);
+                } else {
+                  unreadNotifications = 0;
+                  sl<HomesettingsBloc>()
+                      .settings
+                      ?.unreadNotifications = 0;
+
+                  Navigator.pushNamed(context, "/notifications");
+                }
+              })
+              : Badge(
+              position: BadgePosition.topStart(
+                start: SizeConfig.h(5),
+                top: SizeConfig.h(1),
+              ),
+              badgeContent: Text(
+                unreadNotifications.toString(),
+                style: TextStyle(
+                    color: Colors.white, fontSize: SizeConfig.h(11)),
+              ),
+              child: IconButton(
+                  icon: Icon(
+                    Icons.notifications,
+                    color: AppStyle.secondaryColor,
+                    size: SizeConfig.h(24),
+                  ),
+                  onPressed: () {
+                    if (sl<AuthBloc>().isGuest) {
+                      showLoginDialoge(context);
+                    } else {
+                      unreadNotifications = 0;
+                      sl<HomesettingsBloc>()
+                          .settings
+                          ?.unreadNotifications = 0;
+
+                      Navigator.pushNamed(context, "/notifications");
+                    }
+                  })),
+          Spacer(),
+          Image.asset(
+            "assets/logo.png",
+            width: SizeConfig.h(150),
+            height: SizeConfig.h(150),
+          ),
+          Spacer(),
+          Padding(
+            padding: const EdgeInsets.all(11),
+            child: Row(
               children: [
-                unreadNotifications == 0
-                    ? IconButton(
-                        icon: Icon(
-                          Icons.notifications,
-                          color: AppStyle.secondaryColor,
-                          size: SizeConfig.h(24),
-                        ),
-                        onPressed: () {
-                          if (sl<AuthBloc>().isGuest) {
-                            showLoginDialoge(context);
-                          } else {
-                            unreadNotifications = 0;
-                            sl<HomesettingsBloc>()
-                                .settings
-                                ?.unreadNotifications = 0;
-
-                            Navigator.pushNamed(context, "/notifications");
-                          }
-                        })
-                    : Badge(
-                        position: BadgePosition.topStart(
-                          start: SizeConfig.h(5),
-                          top: SizeConfig.h(1),
-                        ),
-                        badgeContent: Text(
-                          unreadNotifications.toString(),
-                          style: TextStyle(
-                              color: Colors.white, fontSize: SizeConfig.h(11)),
-                        ),
-                        child: IconButton(
-                            icon: Icon(
-                              Icons.notifications,
-                              color: AppStyle.secondaryColor,
-                              size: SizeConfig.h(24),
-                            ),
-                            onPressed: () {
-                              if (sl<AuthBloc>().isGuest) {
-                                showLoginDialoge(context);
-                              } else {
-                                unreadNotifications = 0;
-                                sl<HomesettingsBloc>()
-                                    .settings
-                                    ?.unreadNotifications = 0;
-
-                                Navigator.pushNamed(context, "/notifications");
-                              }
-                            })),
-                Spacer(),
-                Image.asset(
-                  "assets/logo.png",
-                  width: SizeConfig.h(150),
-                  height: SizeConfig.h(150),
-                ),
-                Spacer(),
-                IconButton(
-                    
-                    icon: Icon(
-                      Icons.search,
+                if (preferences != null)
+                  GestureDetector(
+                    onTap: () {
+                      if (preferences != null)
+                        openWhatsapp(preferences!["support_phone"]);
+                    },
+                    child: Icon(
+                      Icons.whatsapp,
                       color: AppStyle.secondaryColor,
-                      size: SizeConfig.h(24),
+                      size: SizeConfig.w(20),
                     ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/search");
-                    }),
+                  ),
+                SizedBox(width: 15),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, "/search");
+                  },
+                  child: Icon(
+                    Icons.search,
+                    color: AppStyle.secondaryColor,
+                    size: SizeConfig.w(20),
+                  ),
+                ),
               ],
-            )
-          : child,
+            ),
+          ),
+        ],
+      )
+          : widget.child,
     );
   }
 }

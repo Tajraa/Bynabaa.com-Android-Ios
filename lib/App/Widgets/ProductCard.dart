@@ -15,6 +15,7 @@ import '../../constants.dart';
 class ProductCard extends StatefulWidget {
   final Product product;
   final bool forPointSale;
+
   ProductCard({required this.product, Key? key, this.forPointSale: false})
       : super(key: key);
 
@@ -24,8 +25,10 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> {
   _ProductCardState(this.product);
+
   final Product product;
   bool loadingCart = false;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -40,12 +43,12 @@ class _ProductCardState extends State<ProductCard> {
         children: [
           Container(
             padding: EdgeInsets.all(5),
-            margin: EdgeInsets.symmetric(horizontal: SizeConfig.h(6.5)),
-            width: SizeConfig.h(157),
-            height: SizeConfig.h(239),
+            margin: EdgeInsets.symmetric(horizontal: 6.5),
+            width: 157,
+            // height: 239,
             decoration: BoxDecoration(
                 color: AppStyle.whiteColor,
-                borderRadius: BorderRadius.circular(SizeConfig.h(10)),
+                borderRadius: BorderRadius.circular(10),
                 boxShadow: [
                   BoxShadow(
                       offset: Offset(0, 10),
@@ -57,11 +60,10 @@ class _ProductCardState extends State<ProductCard> {
                 Column(
                   children: [
                     SizedBox(
-                        width: SizeConfig.h(147),
-                        height: SizeConfig.h(123),
+                        width: 147,
+                        height: 123,
                         child: ClipRRect(
-                            borderRadius:
-                                BorderRadius.circular(SizeConfig.h(10)),
+                            borderRadius: BorderRadius.circular(10),
                             child: Image.network(
                               product.coverImage ?? PlacholderImageUrl,
                               fit: BoxFit.cover,
@@ -70,25 +72,27 @@ class _ProductCardState extends State<ProductCard> {
                               },
                             ))),
                     SizedBox(
-                      height: SizeConfig.h(8),
+                      height: 8,
                     ),
                     Container(
-                      height: SizeConfig.h(97),
-                      padding: EdgeInsets.all(SizeConfig.h(10)),
+                      height: 97,
+                      padding: EdgeInsets.all(10),
                       child: Column(
                         children: [
                           Row(
                             children: [
                               Expanded(
                                   child: Text(
-                                product.title,
-                                style: AppStyle.vexa13.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: AppStyle.secondaryColor,
-                                ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ))
+                                    product.title,
+                                    style: TextStyle(
+                                      height: 1.1,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppStyle.secondaryColor,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ))
                             ],
                           ),
                           Spacer(),
@@ -97,23 +101,38 @@ class _ProductCardState extends State<ProductCard> {
                               children: [
                                 Text(
                                   (product.pointsPrice ?? "").toString(),
-                                  style: AppStyle.yaroCut14.copyWith(),
+                                  style: TextStyle(
+                                      height: 1.1,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: AppStyle.primaryColor),
                                   maxLines: 1,
                                 ),
                                 Text(
                                   " " + S.of(context).point,
-                                  style: AppStyle.yaroCut14.copyWith(),
+                                  style: TextStyle(
+                                      height: 1.1,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: AppStyle.primaryColor),
                                   maxLines: 1,
                                 ),
                                 Spacer(),
                                 Text(
-                                  product.presalePriceText ?? "",
-                                  style: AppStyle.yaroCut14.copyWith(
-                                      color: AppStyle.redColor,
+                                  product.presalePriceText != null &&
+                                      product.presalePriceText!
+                                          .substring(0, 4) !=
+                                          '0.00'
+                                      ? product.presalePriceText!
+                                      : "",
+                                  style: TextStyle(
+                                      height: 1.1,
+                                      fontSize: 14,
                                       fontFamily: AppStyle.priceFontFamily(
                                           product.presalePriceText ?? ""),
                                       fontWeight: FontWeight.normal,
-                                      decoration: TextDecoration.lineThrough),
+                                      decoration: TextDecoration.lineThrough,
+                                      color: AppStyle.redColor),
                                   maxLines: 1,
                                 )
                               ],
@@ -123,85 +142,102 @@ class _ProductCardState extends State<ProductCard> {
                               children: [
                                 Expanded(
                                     child: Text(
-                                  product.priceText,
-                                  style: AppStyle.yaroCut14.copyWith(
-                                      fontFamily: AppStyle.priceFontFamily(
-                                          product.priceText)),
-                                  maxLines: 1,
-                                )),
+                                      product.priceText,
+                                      style: TextStyle(
+                                          height: 1.1,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: AppStyle.priceFontFamily(
+                                              product.priceText),
+                                          fontSize: 14,
+                                          color: AppStyle.primaryColor),
+                                      maxLines: 1,
+                                    )),
                                 Text(
-                                  product.presalePriceText ?? "",
-                                  style: AppStyle.yaroCut14.copyWith(
-                                      color: AppStyle.redColor,
+                                  product.presalePriceText != null &&
+                                      product.presalePriceText!
+                                          .substring(0, 4) !=
+                                          '0.00'
+                                      ? product.presalePriceText!
+                                      : "",
+                                  style: TextStyle(
+                                      height: 1.1,
+                                      fontSize: 14,
                                       fontFamily: AppStyle.priceFontFamily(
                                           product.presalePriceText ?? ""),
                                       fontWeight: FontWeight.normal,
-                                      decoration: TextDecoration.lineThrough),
+                                      decoration: TextDecoration.lineThrough,
+                                      color: AppStyle.primaryColor),
                                   maxLines: 1,
                                 )
                               ],
                             ),
                           Spacer(),
+                          Container(
+                            height: 5,
+                          ),
                           MainButton(
-                              height: SizeConfig.h(30),
+                              height: 28,
                               onTap: loadingCart
                                   ? () {} // not null so incoming taps will not open productDetails
                                   : () {
-                                      if (product.optionsData != null &&
-                                          product.optionsData!.isNotEmpty) {
-                                        Navigator.pushNamed(
-                                          context,
-                                          "/productDetails",
-                                          arguments: {
-                                            "id": product.id.toString(),
-                                            "goToOptions": true,
-                                            "forPointsSale": widget.forPointSale
-                                          },
-                                        );
-                                      } else {
-                                        if (widget.forPointSale) {
-                                          Navigator.pushNamed(
-                                              context, "/checkout_points",
-                                              arguments: {
-                                                "total": product.pointsPrice,
-                                                "product_id": product.id
-                                              });
-                                        } else
-                                          addToCart();
-                                      }
+                                if (product.optionsData != null &&
+                                    product.optionsData!.isNotEmpty) {
+                                  Navigator.pushNamed(
+                                    context,
+                                    "/productDetails",
+                                    arguments: {
+                                      "id": product.id.toString(),
+                                      "goToOptions": true,
+                                      "forPointsSale": widget.forPointSale
                                     },
+                                  );
+                                } else {
+                                  if (widget.forPointSale) {
+                                    Navigator.pushNamed(
+                                        context, "/checkout_points",
+                                        arguments: {
+                                          "total": product.pointsPrice,
+                                          "product_id": product.id
+                                        });
+                                  } else
+                                    addToCart();
+                                }
+                              },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
                                     Icons.shopping_cart_outlined,
                                     color: AppStyle.whiteColor,
-                                    size: SizeConfig.h(12),
+                                    size: 12,
                                   ),
                                   SizedBox(
-                                    width: SizeConfig.h(5),
+                                    width: 5,
                                   ),
                                   Text(
                                     (widget.forPointSale)
                                         ? S.of(context).buyNow
                                         : S.of(context).addToCart,
-                                    style: AppStyle.vexa11
-                                        .copyWith(color: AppStyle.whiteColor),
+                                    style: TextStyle(
+                                      height: 1.1,
+                                      fontSize: 11,
+                                      color: AppStyle.whiteColor,
+                                    ),
                                   ),
                                   if (loadingCart)
                                     Row(
                                       children: [
                                         SizedBox(
-                                          width: SizeConfig.h(5),
+                                          width: 5,
                                         ),
                                         SizedBox(
-                                          width: SizeConfig.h(10),
-                                          height: SizeConfig.h(10),
+                                          width: 10,
+                                          height: 10,
                                           child: CircularProgressIndicator(
                                             strokeWidth: 1,
                                             valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                                    Colors.white),
+                                            AlwaysStoppedAnimation<Color>(
+                                                Colors.white),
                                           ),
                                         ),
                                       ],
@@ -215,15 +251,15 @@ class _ProductCardState extends State<ProductCard> {
                   ],
                 ),
                 Positioned(
-                  top: SizeConfig.h(111),
-                  right: AppStyle.isArabic(context) ? SizeConfig.h(4) : null,
-                  left: AppStyle.isArabic(context) ? null : SizeConfig.h(110),
+                  top: 111,
+                  right: AppStyle.isArabic(context) ? 4 : null,
+                  left: AppStyle.isArabic(context) ? null : 110,
                   child: GestureDetector(
                     onTap: () {
                       if (sl<AuthBloc>().isGuest) {
                         showLoginDialoge(context);
-                      }else
-                      setIsFavorite();
+                      } else
+                        setIsFavorite();
                     },
                     child: Container(
                       decoration: BoxDecoration(boxShadow: [
@@ -232,14 +268,14 @@ class _ProductCardState extends State<ProductCard> {
                             blurRadius: 6,
                             color: Colors.black12)
                       ], shape: BoxShape.circle, color: Colors.white),
-                      width: SizeConfig.h(24),
-                      height: SizeConfig.h(24),
+                      width: 24,
+                      height: 24,
                       child: Icon(
                           product.isFavorite
                               ? Icons.favorite
                               : Icons.favorite_border,
                           color: Colors.red,
-                          size: SizeConfig.h(16)),
+                          size: 16),
                     ),
                   ),
                 )
@@ -252,6 +288,7 @@ class _ProductCardState extends State<ProductCard> {
   }
 
   final debouncer = Debouncer(milliseconds: 1000);
+
   void setIsFavorite() {
     setState(() {
       product.isFavorite = !product.isFavorite;

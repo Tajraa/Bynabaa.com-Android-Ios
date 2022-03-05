@@ -22,6 +22,7 @@ import '../router.dart';
 
 class App extends StatefulWidget {
   static String defaultLanguage = "ar";
+  static String defaultCurrency = "USD";
 
   @override
   _AppState createState() => _AppState();

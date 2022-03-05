@@ -23,9 +23,12 @@ class _AddAddressDialogeState extends State<AddAddressDialoge> {
   final TextEditingController addressController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   CountryModel? selectedCountry;
+  StatesModel? selectedState;
   CityModel? selectedCity;
   final List<CityModel> cities = [];
+  final List<StatesModel> states = [];
   final AddressBloc bloc = AddressBloc();
+
   @override
   void dispose() {
     bloc.close();
@@ -34,7 +37,10 @@ class _AddAddressDialogeState extends State<AddAddressDialoge> {
 
   @override
   Widget build(BuildContext context) {
-    var topPadding = MediaQuery.of(context).padding.top;
+    var topPadding = MediaQuery
+        .of(context)
+        .padding
+        .top;
     return Column(
       children: [
         Container(
@@ -62,7 +68,7 @@ class _AddAddressDialogeState extends State<AddAddressDialoge> {
                     children: [
                       Padding(
                         padding:
-                            EdgeInsets.symmetric(horizontal: SizeConfig.h(24)),
+                        EdgeInsets.symmetric(horizontal: SizeConfig.h(24)),
                         child: Material(
                           color: AppStyle.whiteColor,
                           borderRadius: BorderRadius.circular(SizeConfig.h(10)),
@@ -72,7 +78,7 @@ class _AddAddressDialogeState extends State<AddAddressDialoge> {
                             decoration: BoxDecoration(
                                 color: AppStyle.whiteColor,
                                 borderRadius:
-                                    BorderRadius.circular(SizeConfig.h(10))),
+                                BorderRadius.circular(SizeConfig.h(10))),
                             child: Column(
                               children: [
                                 SizedBox(
@@ -82,7 +88,9 @@ class _AddAddressDialogeState extends State<AddAddressDialoge> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      S.of(context).addAddress,
+                                      S
+                                          .of(context)
+                                          .addAddress,
                                       style: AppStyle.vexa16.copyWith(
                                           color: AppStyle.secondaryColor),
                                     ),
@@ -108,46 +116,46 @@ class _AddAddressDialogeState extends State<AddAddressDialoge> {
                                             controller: nameController,
                                             decoration: InputDecoration(
                                                 contentPadding:
-                                                    EdgeInsets.symmetric(
-                                                        vertical:
-                                                            SizeConfig.h(2),
-                                                        horizontal:
-                                                            SizeConfig.h(8)),
+                                                EdgeInsets.symmetric(
+                                                    vertical:
+                                                    SizeConfig.h(2),
+                                                    horizontal:
+                                                    SizeConfig.h(8)),
                                                 border: OutlineInputBorder(
                                                   borderSide: BorderSide(
                                                       width: 1,
                                                       color: AppStyle
                                                           .primaryColor),
                                                   borderRadius:
-                                                      const BorderRadius.all(
+                                                  const BorderRadius.all(
                                                     const Radius.circular(10),
                                                   ),
                                                 ),
                                                 enabledBorder:
-                                                    OutlineInputBorder(
+                                                OutlineInputBorder(
                                                   borderSide: BorderSide(
                                                       width: 1,
                                                       color: AppStyle
                                                           .disabledColor),
                                                   borderRadius:
-                                                      const BorderRadius.all(
+                                                  const BorderRadius.all(
                                                     const Radius.circular(10),
                                                   ),
                                                 ),
                                                 focusedBorder:
-                                                    OutlineInputBorder(
+                                                OutlineInputBorder(
                                                   borderSide: BorderSide(
                                                       width: 1,
                                                       color: AppStyle
                                                           .primaryColor),
                                                   borderRadius:
-                                                      const BorderRadius.all(
+                                                  const BorderRadius.all(
                                                     const Radius.circular(10),
                                                   ),
                                                 ),
                                                 labelText: "الاسم: ",
                                                 floatingLabelBehavior:
-                                                    FloatingLabelBehavior.auto,
+                                                FloatingLabelBehavior.auto,
                                                 labelStyle: TextStyle(
                                                     fontSize: SizeConfig.h(14)),
                                                 fillColor: Colors.white70)),
@@ -166,54 +174,60 @@ class _AddAddressDialogeState extends State<AddAddressDialoge> {
                                   children: [
                                     Expanded(
                                         child: GestureDetector(
-                                      onTap: () {
-                                        FocusScope.of(context).unfocus();
-                                        showDialog(
+                                          onTap: () {
+                                            FocusScope.of(context).unfocus();
+                                            showDialog(
                                                 context: context,
                                                 builder: (_) =>
                                                     LocationDialoge())
-                                            .then((value) {
-                                          if (value != null) {
-                                            setState(() {
-                                              selectedCountry = value;
+                                                .then((value) {
+                                              if (value != null) {
+                                                setState(() {
+                                                  selectedState = null;
+                                                  selectedCity = null;
+                                                  selectedCountry = value;
+                                                });
+                                                getStatesOfCurrentCountry(
+                                                    context);
+                                              }
                                             });
-                                            getCitiesOfCurrentCountry(context);
-                                          }
-                                        });
-                                      },
-                                      child: Container(
-                                        padding:
+                                          },
+                                          child: Container(
+                                            padding:
                                             EdgeInsets.all(SizeConfig.h(14)),
-                                        child: Row(
-                                          mainAxisAlignment:
+                                            child: Row(
+                                              mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              S.of(context).country +
-                                                  (selectedCountry != null
-                                                      ? (selectedCountry!
-                                                              .title ??
+                                              children: [
+                                                Text(
+                                                  S
+                                                      .of(context)
+                                                      .country +
+                                                      (selectedCountry != null
+                                                          ? (selectedCountry!
+                                                          .title ??
                                                           "")
-                                                      : ""),
-                                              style: AppStyle.vexaLight12
-                                                  .copyWith(
+                                                          : ""),
+                                                  style: AppStyle.vexaLight12
+                                                      .copyWith(
                                                       fontSize:
-                                                          SizeConfig.h(14)),
+                                                      SizeConfig.h(14)),
+                                                ),
+                                                Icon(
+                                                  Icons.arrow_drop_down,
+                                                  size: SizeConfig.h(18),
+                                                  color: AppStyle.disabledColor,
+                                                )
+                                              ],
                                             ),
-                                            Icon(
-                                              Icons.arrow_drop_down,
-                                              size: SizeConfig.h(18),
-                                              color: AppStyle.disabledColor,
-                                            )
-                                          ],
-                                        ),
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: AppStyle.disabledColor),
-                                            borderRadius:
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: AppStyle
+                                                        .disabledColor),
+                                                borderRadius:
                                                 BorderRadius.circular(10)),
-                                      ),
-                                    ))
+                                          ),
+                                        ))
                                   ],
                                 ),
                                 SizedBox(
@@ -224,18 +238,79 @@ class _AddAddressDialogeState extends State<AddAddressDialoge> {
                                       horizontal: SizeConfig.h(14)),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: DropdownButton<StatesModel>(
+                                            underline: Container(),
+                                            icon: Container(),
+                                            hint: Text(
+                                              S
+                                                  .of(context)
+                                                  .state,
+                                              style: AppStyle.vexaLight12
+                                                  .copyWith(
+                                                  fontSize:
+                                                  SizeConfig.h(14)),
+                                            ),
+                                            isExpanded: true,
+                                            onChanged: (v) {
+                                              setState(() {
+                                                selectedState = v;
+                                              });
+                                              getCitiesOfCurrentCountry(context);
+                                            },
+                                            value: selectedState,
+                                            items: states.isEmpty
+                                                ? null
+                                                : states.map((e) {
+                                              return DropdownMenuItem<
+                                                  StatesModel>(
+                                                  value: e,
+                                                  child: Text(
+                                                    (e.name ?? ""),
+                                                    style: AppStyle.vexa12
+                                                        .copyWith(
+                                                        fontSize:
+                                                        SizeConfig
+                                                            .h(14)),
+                                                  ));
+                                            }).toList()),
+                                      ),
+                                      Icon(
+                                        Icons.arrow_drop_down,
+                                        size: SizeConfig.h(18),
+                                        color: AppStyle.disabledColor,
+                                      )
+                                    ],
+                                  ),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: AppStyle.disabledColor),
+                                      borderRadius: BorderRadius.circular(10)),
+                                ),
+                                SizedBox(
+                                  height: SizeConfig.h(14),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: SizeConfig.h(14)),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
                                       Expanded(
                                         child: DropdownButton<CityModel>(
                                             underline: Container(),
                                             icon: Container(),
                                             hint: Text(
-                                              S.of(context).city,
+                                              S
+                                                  .of(context)
+                                                  .city,
                                               style: AppStyle.vexaLight12
                                                   .copyWith(
-                                                      fontSize:
-                                                          SizeConfig.h(14)),
+                                                  fontSize:
+                                                  SizeConfig.h(14)),
                                             ),
                                             isExpanded: true,
                                             onChanged: (v) {
@@ -247,18 +322,18 @@ class _AddAddressDialogeState extends State<AddAddressDialoge> {
                                             items: cities.isEmpty
                                                 ? null
                                                 : cities.map((e) {
-                                                    return DropdownMenuItem<
-                                                            CityModel>(
-                                                        value: e,
-                                                        child: Text(
-                                                          (e.name ?? ""),
-                                                          style: AppStyle.vexa12
-                                                              .copyWith(
-                                                                  fontSize:
-                                                                      SizeConfig
-                                                                          .h(14)),
-                                                        ));
-                                                  }).toList()),
+                                              return DropdownMenuItem<
+                                                  CityModel>(
+                                                  value: e,
+                                                  child: Text(
+                                                    (e.name ?? ""),
+                                                    style: AppStyle.vexa12
+                                                        .copyWith(
+                                                        fontSize:
+                                                        SizeConfig
+                                                            .h(14)),
+                                                  ));
+                                            }).toList()),
                                       ),
                                       Icon(
                                         Icons.arrow_drop_down,
@@ -282,7 +357,9 @@ class _AddAddressDialogeState extends State<AddAddressDialoge> {
                                       if (v != null && v.isNotEmpty) {
                                         return null;
                                       }
-                                      return S.of(context).mustAddAddress;
+                                      return S
+                                          .of(context)
+                                          .mustAddAddress;
                                     },
                                     decoration: InputDecoration(
                                         border: OutlineInputBorder(
@@ -309,9 +386,11 @@ class _AddAddressDialogeState extends State<AddAddressDialoge> {
                                             const Radius.circular(10),
                                           ),
                                         ),
-                                        labelText: S.of(context).addressDetails,
+                                        labelText: S
+                                            .of(context)
+                                            .addressDetails,
                                         floatingLabelBehavior:
-                                            FloatingLabelBehavior.auto,
+                                        FloatingLabelBehavior.auto,
                                         labelStyle: TextStyle(
                                             fontSize: SizeConfig.h(14)),
                                         fillColor: Colors.white70)),
@@ -344,17 +423,19 @@ class _AddAddressDialogeState extends State<AddAddressDialoge> {
                                               name: nameController.text,
                                               countryId: selectedCountry!.id,
                                               description:
-                                                  addressController.text));
+                                              addressController.text));
                                         }
                                       },
                                       child: SizedBox(
                                         height: SizeConfig.h(44),
                                         child: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                              S.of(context).addAddress,
+                                              S
+                                                  .of(context)
+                                                  .addAddress,
                                               style: AppStyle.vexa16,
                                             )
                                           ],
@@ -384,9 +465,27 @@ class _AddAddressDialogeState extends State<AddAddressDialoge> {
     );
   }
 
+  Future<void> getStatesOfCurrentCountry(BuildContext context) async {
+    final result = await GetStates(sl())
+        .call(GetStatesParams(selectedCountry!.id));
+    result.fold((l) {
+      AppSnackBar.show(context, l.errorMessage, ToastType.Error);
+    }, (r) {
+      if (r.isEmpty) {
+        getCitiesOfCurrentCountry(context);
+      }
+      setState(() {
+        states.clear();
+        states.addAll(r);
+        selectedCity = null;
+      });
+    });
+  }
+
   Future<void> getCitiesOfCurrentCountry(BuildContext context) async {
     final result = await GetCities(sl())
-        .call(GetCitiesParams(countryId: selectedCountry!.id));
+        .call(GetCitiesParams(
+        countryId: selectedCountry!.id, stateId: selectedState?.id));
     result.fold((l) {
       AppSnackBar.show(context, l.errorMessage, ToastType.Error);
     }, (r) {

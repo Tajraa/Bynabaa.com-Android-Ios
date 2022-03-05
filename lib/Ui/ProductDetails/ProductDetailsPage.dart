@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:progiom_cms/core.dart';
 import 'package:progiom_cms/ecommerce.dart';
+import 'package:progiom_cms/homeSettings.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import '/App/Widgets/AppErrorWidget.dart';
 import '/App/Widgets/AppLoader.dart';
 import '/App/Widgets/CustomAppBar.dart';
@@ -16,13 +18,17 @@ import '/Utils/HeroDialoge.dart';
 import '/Utils/SizeConfig.dart';
 import '/Utils/Style.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:html/parser.dart' show parse;
 import '/generated/l10n.dart';
 import '../../injections.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProductsDetailsPage extends StatefulWidget {
   final String id;
   final bool goToOptions;
   final bool forPointSale;
+
   ProductsDetailsPage(
       {required this.id,
       Key? key,
@@ -36,8 +42,24 @@ class ProductsDetailsPage extends StatefulWidget {
 
 class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
   final ProductdetailsBloc bloc = ProductdetailsBloc();
+  Map? preferences;
+  late YoutubePlayerController _controller;
+
+  getPreferences() async {
+    final result = await GetPreferences(sl()).call(NoParams());
+    result.fold((l) {
+      AppSnackBar.show(context, l.errorMessage, ToastType.Error);
+    }, (r) {
+      if (mounted)
+        setState(() {
+          preferences = r;
+        });
+    });
+  }
+
   @override
   void initState() {
+    getPreferences();
     bloc.add(GetDetails(widget.id));
     super.initState();
   }
@@ -45,6 +67,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
   @override
   void dispose() {
     bloc.close();
+    _controller.close();
     super.dispose();
   }
 
@@ -52,6 +75,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
   bool showSelectOptions = false;
   Map<String, String> selectedOptions = {};
   int currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     var topPadding = MediaQuery.of(context).padding.top;
@@ -84,6 +108,10 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
             );
           else if (state is DetailsReady) {
             final product = state.product;
+            if (state.product.video_url != null)
+              _controller = YoutubePlayerController(
+                initialVideoId: state.product.video_url!,
+              );
             return Stack(
               alignment: Alignment.topCenter,
               children: [
@@ -167,22 +195,46 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                 SizedBox(
                                   height: SizeConfig.h(7),
                                 ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Html(
-                                        data: product.description ?? "",
-                                        style: {
-                                          "*": Style.fromTextStyle(
-                                                  AppStyle.vexaLight12)
-                                              .copyWith(
-                                                  backgroundColor:
-                                                      Colors.transparent)
-                                        },
-                                      ),
-                                    ),
-                                  ],
+                                SelectableLinkify(
+                                  text: _parseHtmlString(
+                                      product.description ?? ""),
+                                  onOpen: (link) async {
+                                    // if (await canLaunch(link.url)) {
+                                    launch(link.url);
+                                    // } else {}
+                                  },
+                                  linkStyle: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: AppStyle.secondaryColor,
+                                    decoration: TextDecoration.underline,
+                                    fontSize: SizeConfig.h(12),
+                                  ),
+                                  style: AppStyle.vexaLight12.copyWith(
+                                    backgroundColor: Colors.transparent,
+                                    // whiteSpace: WhiteSpace.PRE,
+                                    // lineHeight: LineHeight(1.5),
+                                    height: 1.5,
+                                    color: Color(0xFF333333),
+                                  ),
                                 ),
+                                // SelectableHtml(
+                                //   data: product.description ?? "",
+                                //   style: {
+                                //     "*": Style.fromTextStyle(
+                                //         AppStyle.vexaLight12)
+                                //         .copyWith(
+                                //         backgroundColor: Colors.transparent,
+                                //         whiteSpace: WhiteSpace.PRE,
+                                //         lineHeight: LineHeight(1.5),
+                                //         color: Color(0xFF444444),
+                                //     )
+                                //   },
+                                // ),
+                                if (state.product.video_url != null)
+                                  YoutubePlayerIFrame(
+                                    controller: _controller,
+                                    // showVideoProgressIndicator: true,
+                                  ),
                                 if (product.optionsData != null &&
                                     product.optionsData!.isNotEmpty)
                                   Column(
@@ -306,12 +358,17 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                     Column(
                                       children: [
                                         Text(
-                                          product.presalePriceText??"",
+                                          product.presalePriceText != null &&
+                                                  product.presalePriceText!
+                                                          .substring(0, 4) !=
+                                                      '0.00'
+                                              ? product.presalePriceText!
+                                              : "",
                                           style: AppStyle.yaroCut14.copyWith(
                                               fontSize: SizeConfig.h(12),
                                               fontFamily:
                                                   AppStyle.priceFontFamily(
-                                                product.priceText,
+                                                product.presalePriceText ?? '',
                                               ),
                                               decoration:
                                                   TextDecoration.lineThrough,
@@ -320,12 +377,11 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                               color: AppStyle.redColor),
                                         ),
                                         Text(
-                                          product.priceText ,
+                                          product.priceText,
                                           style: AppStyle.yaroCut14.copyWith(
-                                              fontFamily: AppStyle
-                                                  .priceFontFamily(product
-                                                          .presalePriceText ??
-                                                      ''),
+                                              fontFamily:
+                                                  AppStyle.priceFontFamily(
+                                                      product.priceText),
                                               fontSize: SizeConfig.h(22)),
                                         )
                                       ],
@@ -361,7 +417,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                       ),
                       SizedBox(
                         height: SizeConfig.h(45),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -384,6 +440,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
   bool loadingCart = false;
   int count = 1;
   final Debouncer debouncer = Debouncer();
+
   void addToCart() async {
     setState(() {
       loadingCart = true;
@@ -554,7 +611,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
 
   Container buildProductsSection(List<Product> relatedProducts) {
     return Container(
-      height: SizeConfig.h(260),
+      height: SizeConfig.h(280),
       width: double.infinity,
       child: Row(
         children: [
@@ -651,6 +708,21 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
             ],
           ),
           Spacer(),
+          if (preferences != null)
+            GestureDetector(
+              onTap: () {
+                if (preferences != null)
+                  openWhatsapp(preferences!["support_phone"]);
+              },
+              child: Icon(
+                Icons.whatsapp,
+                color: AppStyle.secondaryColor,
+                size: SizeConfig.w(20),
+              ),
+            ),
+          SizedBox(
+            width: SizeConfig.h(24),
+          ),
           if (id != null)
             FavoriteButton(
               isFavorite: isFavorite,
@@ -658,9 +730,16 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
             ),
           SizedBox(
             width: SizeConfig.h(24),
-          )
+          ),
         ],
       ),
     );
+  }
+
+  String _parseHtmlString(String htmlString) {
+    final document = parse(htmlString);
+    final String parsedString =
+        parse(document.body?.text).documentElement?.text ?? "";
+    return parsedString.replaceAll('\n', '\n\n');
   }
 }

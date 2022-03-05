@@ -1300,6 +1300,16 @@ class S {
     );
   }
 
+  /// `المقاطعة:`
+  String get state {
+    return Intl.message(
+      'المقاطعة:',
+      name: 'state',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `العنوان بالتفصيل`
   String get addressDetails {
     return Intl.message(
@@ -2169,6 +2179,16 @@ class S {
       args: [],
     );
   }
+
+  /// `العملة`
+  String get currency {
+    return Intl.message(
+      'العملة',
+      name: 'currency',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -2184,8 +2204,10 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   @override
   bool isSupported(Locale locale) => _isSupported(locale);
+
   @override
   Future<S> load(Locale locale) => S.load(locale);
+
   @override
   bool shouldReload(AppLocalizationDelegate old) => false;
 

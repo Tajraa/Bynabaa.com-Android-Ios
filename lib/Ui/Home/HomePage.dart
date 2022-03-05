@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
     UniLinks.initDynamicLinks((id) {
       Navigator.pushNamed(context, "/productDetails", arguments: id);
     });
-    
+
   }
 
   @override
@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                   if (settings.slides?.isNotEmpty ?? false)
                     CarouselSection(slides: settings.slides!),
                   SizedBox(
-                    height: SizeConfig.h(23),
+                    height: 23,
                   ),
                   Column(
                     mainAxisSize: MainAxisSize.min,
@@ -74,15 +74,16 @@ class _HomePageState extends State<HomePage> {
                       buildSectionLabel(S.of(context).categories, () {},
                           hasSeeAll: false),
                       buildCategoriesSection(settings),
+                      SizedBox(height: 20),
                       ...[
                         for (CategoryFeatured section
-                            in settings.categoriesFeatured ?? [])
+                        in settings.categoriesFeatured ?? [])
                           if (section.posts.data.isNotEmpty)
                             Column(
                               children: [
                                 buildSectionLabel(section.title, () {
                                   for (Category cat
-                                      in settings.categories ?? []) {
+                                  in settings.categories ?? []) {
                                     if (cat.id == section.id) {
                                       Navigator.pushNamed(
                                           context, "/categoryProducts",
@@ -93,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                                       return;
                                     } else {
                                       for (Category subCat
-                                          in cat.subCategories ?? []) {
+                                      in cat.subCategories ?? []) {
                                         if (subCat.id == section.id) {
                                           Navigator.pushNamed(
                                               context, "/categoryProducts",
@@ -127,7 +128,7 @@ class _HomePageState extends State<HomePage> {
 
   Container buildCategoriesSection(SettingsModel settings) {
     return Container(
-      height: SizeConfig.h(100),
+      height: 110,
       width: double.infinity,
       child: Row(
         children: [
@@ -146,7 +147,7 @@ class _HomePageState extends State<HomePage> {
 
   Container buildProductsSection(CategoryFeatured section) {
     return Container(
-      height: SizeConfig.h(260),
+      height: 260,
       width: double.infinity,
       child: Row(
         children: [
@@ -173,9 +174,9 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: [
           Container(
-            margin: EdgeInsets.symmetric(horizontal: SizeConfig.h(7)),
-            width: SizeConfig.h(61),
-            height: SizeConfig.h(61),
+            margin: EdgeInsets.symmetric(horizontal: 7),
+            width: 80,
+            height: 80,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 boxShadow: [
@@ -193,21 +194,22 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           SizedBox(
-            height: SizeConfig.h(8),
+            height: 8,
           ),
           SizedBox(
-            width: SizeConfig.h(61),
+            width: 70,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
                     child: Text(
-                  category.title,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  textAlign: TextAlign.center,
-                  style: AppStyle.vexa12,
-                ))
+                      category.title,
+                      // overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          height: 1.1, fontSize: 13, color: AppStyle.greyDark),
+                    ))
               ],
             ),
           )
@@ -220,25 +222,30 @@ class _HomePageState extends State<HomePage> {
       {bool? hasSeeAll}) {
     return Container(
       margin: EdgeInsets.only(
-        bottom: SizeConfig.h(14),
+        bottom: 14,
       ),
-      padding: EdgeInsets.symmetric(horizontal: SizeConfig.h(24)),
+      padding: EdgeInsets.symmetric(horizontal: 24),
       width: double.infinity,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             title,
-            style: AppStyle.vexa14.copyWith(fontWeight: FontWeight.bold),
+            style: TextStyle(
+                height: 1.1,
+                fontSize: 14,
+                color: AppStyle.secondaryColor,
+                fontWeight: FontWeight.w700),
           ),
           if (hasSeeAll ?? true)
             GestureDetector(
               onTap: onTap,
               child: Text(
                 S.of(context).see_all,
-                style: AppStyle.vexaLight12,
+                style: TextStyle(
+                    height: 1.1, fontSize: 12, color: AppStyle.greyColor),
               ),
-            )
+            ),
         ],
       ),
     );

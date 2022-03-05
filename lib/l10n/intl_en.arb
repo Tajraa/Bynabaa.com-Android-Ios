@@ -128,6 +128,7 @@
   "addressName": "Address name:",
   "country": "Country:",
   "city": "City:",
+  "state": "State:",
   "addressDetails": "Address in detail",
   "noAddresses": "No addresses",
   "click_twice": "Double click to exit",
@@ -211,7 +212,6 @@
   "change_points_with_products": "Exchange Points",
   "buyNow": "buy now",
   "share_to_get_points": "Share the app to get more points",
-  "dont_have_points_enogh": "you don't have enough points"
-
-
+  "dont_have_points_enogh": "you don't have enough points",
+  "currency": "Currency"
 }

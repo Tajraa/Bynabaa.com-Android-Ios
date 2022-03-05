@@ -78,7 +78,7 @@ class _BasePageState extends State<BasePage> with TickerProviderStateMixin {
     homeAnimationController.forward();
 
     CartNumber.instance.addListener(() {
-      if (mounted) setState(() {});
+      setState(() {});
     });
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
@@ -131,7 +131,7 @@ class _BasePageState extends State<BasePage> with TickerProviderStateMixin {
           extendBody: true,
           bottomNavigationBar: buildBottomNavigaton(context),
           floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
+          FloatingActionButtonLocation.centerDocked,
           floatingActionButton: FloatingActionButton(
             key: cartNavKey,
             backgroundColor: AppStyle.primaryColor,
@@ -159,7 +159,7 @@ class _BasePageState extends State<BasePage> with TickerProviderStateMixin {
               badgeContent: Text(
                 CartNumber.instance.number.toString(),
                 style:
-                    TextStyle(color: Colors.white, fontSize: SizeConfig.h(10)),
+                TextStyle(color: Colors.white, fontSize: SizeConfig.h(10)),
               ),
               child: Center(
                 child: Icon(
@@ -215,38 +215,38 @@ class _BasePageState extends State<BasePage> with TickerProviderStateMixin {
       bottom: SizeConfig.h(AppStyle.bottomNavHieght - 20),
       width: SizeConfig.screenWidth,
       child: (oldPageIndex <= 1 && pageIndex > 1 ||
-              oldPageIndex > 1 && pageIndex <= 1)
+          oldPageIndex > 1 && pageIndex <= 1)
           ? Align(
-              alignment: Alignment(_getIndicatorPosition(pageIndex), 0),
-              child: Container(
-                alignment: Alignment(_getIndicatorPosition(pageIndex), 0),
-                width: SizeConfig.screenWidth / 5,
-                color: Colors.transparent,
-                height: 2,
-                child: Center(
-                  child: Container(
-                    width: SizeConfig.h(45),
-                    color: AppStyle.primaryColor,
-                  ),
-                ),
-              ),
-            )
-          : AnimatedAlign(
-              alignment: Alignment(_getIndicatorPosition(pageIndex), 0),
-              curve: Curves.fastLinearToSlowEaseIn,
-              duration: const Duration(milliseconds: 600),
-              child: Container(
-                width: SizeConfig.screenWidth / 4,
-                height: 2,
-                color: Colors.transparent,
-                child: Center(
-                  child: Container(
-                    width: SizeConfig.h(45),
-                    color: AppStyle.primaryColor,
-                  ),
-                ),
-              ),
+        alignment: Alignment(_getIndicatorPosition(pageIndex), 0),
+        child: Container(
+          alignment: Alignment(_getIndicatorPosition(pageIndex), 0),
+          width: SizeConfig.screenWidth / 5,
+          color: Colors.transparent,
+          height: 2,
+          child: Center(
+            child: Container(
+              width: SizeConfig.h(45),
+              color: AppStyle.primaryColor,
             ),
+          ),
+        ),
+      )
+          : AnimatedAlign(
+        alignment: Alignment(_getIndicatorPosition(pageIndex), 0),
+        curve: Curves.fastLinearToSlowEaseIn,
+        duration: const Duration(milliseconds: 600),
+        child: Container(
+          width: SizeConfig.screenWidth / 4,
+          height: 2,
+          color: Colors.transparent,
+          child: Center(
+            child: Container(
+              width: SizeConfig.h(45),
+              color: AppStyle.primaryColor,
+            ),
+          ),
+        ),
+      ),
     );
   }
 

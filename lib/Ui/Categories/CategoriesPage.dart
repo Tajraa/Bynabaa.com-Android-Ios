@@ -44,17 +44,17 @@ class _CategoriesPageState extends State<CategoriesPage> {
                   ),
                   Expanded(
                       child: GridView(
-                    padding: EdgeInsets.zero,
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: SizeConfig.h(110),
-                        crossAxisSpacing: 0.0,
-                        mainAxisExtent: SizeConfig.h(100),
-                        mainAxisSpacing: SizeConfig.h(10)),
-                    children: [
-                      for (Category category in settings.categories!)
-                        buildCategoryCard(category),
-                    ],
-                  ))
+                        padding: EdgeInsets.zero,
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: SizeConfig.h(110),
+                            crossAxisSpacing: 0.0,
+                            mainAxisExtent: SizeConfig.h(100),
+                            mainAxisSpacing: SizeConfig.h(10)),
+                        children: [
+                          for (Category category in settings.categories!)
+                            buildCategoryCard(category),
+                        ],
+                      ))
                 ],
               ),
             ),
@@ -101,12 +101,12 @@ class _CategoriesPageState extends State<CategoriesPage> {
               children: [
                 Expanded(
                     child: Text(
-                  category.title,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  textAlign: TextAlign.center,
-                  style: AppStyle.vexa12,
-                ))
+                      category.title,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      style: AppStyle.vexa12,
+                    ))
               ],
             ),
           )
