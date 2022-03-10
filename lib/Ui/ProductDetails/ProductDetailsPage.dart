@@ -263,7 +263,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                             Row(
                                               children: [
                                                 Text(
-                                                  option.title + " :",
+                                                  (option.title ?? '') + " :",
                                                   style: AppStyle.vexa14,
                                                 )
                                               ],

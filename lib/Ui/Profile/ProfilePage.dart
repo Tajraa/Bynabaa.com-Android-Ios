@@ -55,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
   bool notificationsEnabled = false;
   final debouncer = Debouncer();
   String selectedLanguage = "ar";
-  String selectedCurrency = "USD";
+  String? selectedCurrency;
   PackageInfo? packageInfo;
 
   @override
@@ -90,14 +90,17 @@ class _ProfilePageState extends State<ProfilePage> {
   getLanguage() async {
     selectedLanguage =
         await sl<PrefsHelper>().loadLangFromSharedPref() ?? App.defaultLanguage;
-    selectedCurrency = await sl<PrefsHelper>().loadCurrencyFromSharedPref() ??
-        App.defaultCurrency;
+    selectedCurrency = await sl<PrefsHelper>().loadCurrencyFromSharedPref();
     if (mounted) setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     final homeModel = sl<HomesettingsBloc>().settings!;
+    if (selectedCurrency == null &&
+        homeModel.currencies != null &&
+        homeModel.currencies!.isNotEmpty)
+      selectedCurrency = homeModel.currencies![0].code;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -151,8 +154,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       emailController
                         ..value = TextEditingValue(
                             text:
-                            sl<HomesettingsBloc>().settings?.user?.email ??
-                                "")),
+                                sl<HomesettingsBloc>().settings?.user?.email ??
+                                    "")),
                   SizedBox(
                     height: SizeConfig.h(16),
                   ),
@@ -190,7 +193,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   buildSubSection(
                     S.of(context).my_addresses,
-                        () {
+                    () {
                       Navigator.pushNamed(context, "/myAddresses");
                     },
                     icon: Icons.location_on_outlined,
@@ -201,7 +204,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   buildSubSection(
                     S.of(context).orderHistory,
-                        () {
+                    () {
                       Navigator.pushNamed(context, "/orders");
                     },
                     svgAsset: "assets/sent.svg",
@@ -218,7 +221,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   buildSubSection(
                     S.of(context).notifications,
-                        () {},
+                    () {},
                     svgAsset: "assets/speaker.svg",
                     trailing: SizedBox(
                       height: SizeConfig.h(18),
@@ -227,7 +230,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: Switch(
                               value: notificationEnabled,
                               thumbColor:
-                              MaterialStateProperty.resolveWith(getColor),
+                                  MaterialStateProperty.resolveWith(getColor),
                               inactiveThumbColor: AppStyle.disabledColor,
                               inactiveTrackColor: AppStyle.disabledColor,
                               activeColor: AppStyle.primaryColor,
@@ -433,28 +436,34 @@ class _ProfilePageState extends State<ProfilePage> {
                     Column(
                       children: homeModel.currencies!
                           .map((e) => Row(
-                        children: [
-                          Expanded(
-                            child: SizedBox(
-                              child: RadioListTile<String>(
-                                  contentPadding: EdgeInsets.zero,
-                                  title: Text(e.title ?? '',
-                                      style: AppStyle.vexaLight12),
-                                  activeColor: AppStyle.primaryColor,
-                                  value: e.code ?? '',
-                                  groupValue: selectedCurrency,
-                                  onChanged: (v) {
-                                    setState(() {
-                                      selectedCurrency = v!;
+                                children: [
+                                  Expanded(
+                                    child: SizedBox(
+                                      child: RadioListTile<String>(
+                                          contentPadding: EdgeInsets.zero,
+                                          title: Text(e.title ?? '',
+                                              style: AppStyle.vexaLight12),
+                                          activeColor: AppStyle.primaryColor,
+                                          value: e.code ?? '',
+                                          groupValue: selectedCurrency,
+                                          onChanged: (v) {
+                                            setState(() {
+                                              selectedCurrency = v!;
 
-                                      sl<PrefsHelper>()
-                                          .saveCurrencyToSharedPref(v);
-                                    });
-                                  }),
-                            ),
-                          )
-                        ],
-                      ))
+                                              sl<PrefsHelper>()
+                                                  .saveCurrencyToSharedPref(v)
+                                                  .then((value) {
+                                                    if (value) {
+                                                      sl<HomesettingsBloc>()
+                                                          .add(UpdateNewCurrency());
+                                                    }
+                                              });
+                                            });
+                                          }),
+                                    ),
+                                  )
+                                ],
+                              ))
                           .toList(),
                     ),
                   // SizedBox(
@@ -473,27 +482,27 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Expanded(
                     child: GestureDetector(
-                      onTap: () {
-                        sl<AuthBloc>().add(LogoutEvent());
-                        sl<HomesettingsBloc>().settings?.user = null;
-                        // Navigator.pop(context);
-                        Navigator.pushReplacementNamed(context, "/login",
-                            arguments: false);
-                      },
-                      child: SizedBox(
-                        height: SizeConfig.h(44),
-                        child: MainButton(
-                          color: AppStyle.redColor,
-                          isOutlined: true,
-                          child: Center(
-                              child: Text(
-                                S.of(context).signOut,
-                                style:
-                                AppStyle.vexa16.copyWith(color: AppStyle.redColor),
-                              )),
-                        ),
-                      ),
-                    )),
+                  onTap: () {
+                    sl<AuthBloc>().add(LogoutEvent());
+                    sl<HomesettingsBloc>().settings?.user = null;
+                    // Navigator.pop(context);
+                    Navigator.pushReplacementNamed(context, "/login",
+                        arguments: false);
+                  },
+                  child: SizedBox(
+                    height: SizeConfig.h(44),
+                    child: MainButton(
+                      color: AppStyle.redColor,
+                      isOutlined: true,
+                      child: Center(
+                          child: Text(
+                        S.of(context).signOut,
+                        style:
+                            AppStyle.vexa16.copyWith(color: AppStyle.redColor),
+                      )),
+                    ),
+                  ),
+                )),
                 SizedBox(
                   width: SizeConfig.h(24),
                 ),
@@ -509,13 +518,13 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget buildSubSection(
-      String title,
-      Function onTap, {
-        IconData? icon,
-        String? svgAsset,
-        Widget? trailing,
-        GlobalKey? key,
-      }) {
+    String title,
+    Function onTap, {
+    IconData? icon,
+    String? svgAsset,
+    Widget? trailing,
+    GlobalKey? key,
+  }) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
@@ -526,22 +535,22 @@ class _ProfilePageState extends State<ProfilePage> {
         width: double.infinity,
         decoration: BoxDecoration(
             border:
-            Border(bottom: BorderSide(color: Colors.black12, width: 0.5))),
+                Border(bottom: BorderSide(color: Colors.black12, width: 0.5))),
         child: Row(
           key: key,
           children: [
             icon != null
                 ? Icon(
-              icon,
-              color: AppStyle.primaryColor,
-              size: SizeConfig.h(18),
-            )
+                    icon,
+                    color: AppStyle.primaryColor,
+                    size: SizeConfig.h(18),
+                  )
                 : SvgPicture.asset(
-              svgAsset!,
-              height: SizeConfig.h(18),
-              width: SizeConfig.h(18),
-              color: AppStyle.primaryColor,
-            ),
+                    svgAsset!,
+                    height: SizeConfig.h(18),
+                    width: SizeConfig.h(18),
+                    color: AppStyle.primaryColor,
+                  ),
             SizedBox(
               width: SizeConfig.h(8),
             ),

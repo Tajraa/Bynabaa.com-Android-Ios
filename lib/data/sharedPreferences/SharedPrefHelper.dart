@@ -33,7 +33,7 @@ class PrefsHelper {
   }
 
 
-  saveCurrencyToSharedPref(String currency) async {
+  Future<bool> saveCurrencyToSharedPref(String currency) async {
     final p = await (_getSharedPref);
     return p.setString(AuthConstants.Currency, currency);
   }
