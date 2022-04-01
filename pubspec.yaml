@@ -52,6 +52,7 @@ dependencies:
   flutter_linkify: ^5.0.2
   #  youtube_player_flutter: ^8.0.0
   youtube_player_iframe: ^2.2.2
+  intl_phone_field: ^3.0.1
   flutter_localizations:
     sdk: flutter
   progiom_cms:

@@ -89,7 +89,9 @@ class MessageLookup extends MessageLookupByLibrary {
             " عن طريق ارسال رسالة واتساب للبائع تحوي معلومات السلة دون الحاجة لتسجيل الدخول"),
         "checkout_whatsapp_tour_title":
             MessageLookupByLibrary.simpleMessage("شراء السلة عن طريق الواتساب"),
+        "choose_value": MessageLookupByLibrary.simpleMessage("اختر قيمة"),
         "city": MessageLookupByLibrary.simpleMessage("المدينة:"),
+        "clear": MessageLookupByLibrary.simpleMessage("مسح"),
         "click_twice":
             MessageLookupByLibrary.simpleMessage("اضغط مرتين للخروج"),
         "code": MessageLookupByLibrary.simpleMessage("الكود"),
@@ -109,6 +111,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("الكوبون غير صالح."),
         "create_account": MessageLookupByLibrary.simpleMessage("أنشئ حساب "),
         "creditCard": MessageLookupByLibrary.simpleMessage("بطاقة ائتمانية"),
+        "currency": MessageLookupByLibrary.simpleMessage("العملة"),
         "current_points_balance":
             MessageLookupByLibrary.simpleMessage("رصيد النقاط الحالي"),
         "danger": MessageLookupByLibrary.simpleMessage("تحذير"),
@@ -237,6 +240,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paymentMethod": MessageLookupByLibrary.simpleMessage("طريقة الدفع"),
         "personalInfo":
             MessageLookupByLibrary.simpleMessage("المعلومات الشخصية"),
+        "phone_number": MessageLookupByLibrary.simpleMessage("رقم الموبايل"),
         "please_sign_in":
             MessageLookupByLibrary.simpleMessage("الرجاء تسجيل الدخول"),
         "please_sign_up":
@@ -290,6 +294,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "skip": MessageLookupByLibrary.simpleMessage("تخطي"),
         "sort_by": MessageLookupByLibrary.simpleMessage("ترتيب حسب"),
         "startNow": MessageLookupByLibrary.simpleMessage("ابدأ الأن"),
+        "state": MessageLookupByLibrary.simpleMessage("المقاطعة:"),
         "submit": MessageLookupByLibrary.simpleMessage("تطبيق"),
         "success": MessageLookupByLibrary.simpleMessage("نجاح"),
         "tajraa_points": MessageLookupByLibrary.simpleMessage("نقاط عبر نبأ "),

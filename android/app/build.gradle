@@ -37,8 +37,8 @@ android {
         applicationId "com.progiom.Bynabaa"
         minSdkVersion 19
         targetSdkVersion 31
-        versionCode 6
-        versionName "1.1"
+        versionCode 7
+        versionName "1.2"
         multiDexEnabled true
     }
 def keystoreProperties = new Properties()

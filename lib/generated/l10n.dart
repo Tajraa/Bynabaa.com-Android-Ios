@@ -2189,6 +2189,36 @@ class S {
       args: [],
     );
   }
+
+  /// `مسح`
+  String get clear {
+    return Intl.message(
+      'مسح',
+      name: 'clear',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `اختر قيمة`
+  String get choose_value {
+    return Intl.message(
+      'اختر قيمة',
+      name: 'choose_value',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `رقم الموبايل`
+  String get phone_number {
+    return Intl.message(
+      'رقم الموبايل',
+      name: 'phone_number',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -2204,10 +2234,8 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   @override
   bool isSupported(Locale locale) => _isSupported(locale);
-
   @override
   Future<S> load(Locale locale) => S.load(locale);
-
   @override
   bool shouldReload(AppLocalizationDelegate old) => false;
 

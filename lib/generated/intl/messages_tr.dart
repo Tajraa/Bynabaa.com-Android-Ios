@@ -115,6 +115,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "create_account":
             MessageLookupByLibrary.simpleMessage("bir hesap oluştur"),
         "creditCard": MessageLookupByLibrary.simpleMessage("kredi kartı"),
+        "currency": MessageLookupByLibrary.simpleMessage("para birimi"),
         "current_points_balance":
             MessageLookupByLibrary.simpleMessage("mevcut puan bakiyesi"),
         "danger": MessageLookupByLibrary.simpleMessage("tehlike"),

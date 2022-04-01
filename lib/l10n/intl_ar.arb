@@ -212,5 +212,8 @@
   "buyNow": "اشتري الأن",
   "share_to_get_points": "شارك التطبيق مع أصدقائك لتحصل على المزيد من النقاط",
   "dont_have_points_enogh": "ليس لديك نقاط كافية",
-  "currency": "العملة"
+  "currency": "العملة",
+  "clear": "مسح",
+  "choose_value": "اختر قيمة",
+  "phone_number": "رقم الموبايل"
 }

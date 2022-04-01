@@ -4,6 +4,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:progiom_cms/auth.dart';
 import 'package:progiom_cms/core.dart';
 import './/Utils/AppSnackBar.dart';
@@ -30,8 +32,13 @@ class _LoginPageState extends State<LoginPage>
   bool isSignUp = false;
   late TabController _controller;
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  String? countryCode = '';
+  String? mobile = '';
+
   @override
   void initState() {
     _controller = TabController(length: 2, vsync: this);
@@ -54,6 +61,7 @@ class _LoginPageState extends State<LoginPage>
   }
 
   TapGestureRecognizer? tapGestureRecognizer;
+
   void _goToRegister() {
     _controller.animateTo(1);
     setState(() {
@@ -98,8 +106,8 @@ class _LoginPageState extends State<LoginPage>
                 padding: EdgeInsets.symmetric(horizontal: SizeConfig.h(24)),
                 child: SingleChildScrollView(
                   child: SizedBox(
-                    height: (SizeConfig.screenHeight - SizeConfig.h(65)) +
-                        ((Platform.isIOS) ? 80 : 0),
+                    height: (SizeConfig.screenHeight - SizeConfig.h(40)) +
+                        ((Platform.isIOS) ? 90 : 0),
                     child: Column(
                       children: [
                         Row(
@@ -151,9 +159,9 @@ class _LoginPageState extends State<LoginPage>
                                         indicatorColor: Colors.orange,
                                         labelColor: AppStyle.secondaryColor,
                                         unselectedLabelColor:
-                                            AppStyle.disabledColor,
+                                        AppStyle.disabledColor,
                                         indicatorSize:
-                                            TabBarIndicatorSize.label,
+                                        TabBarIndicatorSize.label,
                                         labelStyle: AppStyle.vexa14
                                             .copyWith(fontFamily: "Almaria"),
                                         unselectedLabelStyle: AppStyle.vexa14
@@ -177,7 +185,7 @@ class _LoginPageState extends State<LoginPage>
                                       Expanded(
                                         child: TabBarView(
                                           physics:
-                                              NeverScrollableScrollPhysics(),
+                                          NeverScrollableScrollPhysics(),
                                           controller: _controller,
                                           children: [
                                             buildLoginDialoge(),
@@ -197,8 +205,12 @@ class _LoginPageState extends State<LoginPage>
                                       if (isSignUp) {
                                         sl<AuthBloc>().add(SignUpEvent({
                                           "name": nameController.text,
-                                          "email": emailController.text,
-                                          "password": passwordController.text
+                                          "email": emailController.text == ''
+                                              ? null
+                                              : emailController.text,
+                                          "country_code": countryCode,
+                                          "mobile": mobile,
+                                          "password": passwordController.text,
                                         }));
                                       } else {
                                         sl<AuthBloc>().add(LoginEvent(
@@ -292,7 +304,7 @@ class _LoginPageState extends State<LoginPage>
                           ],
                         ),
                         buildSocialLogin(context),
-                        // Spacer(),
+                        Spacer(),
                         GestureDetector(
                           behavior: HitTestBehavior.opaque,
                           onTap: () {
@@ -307,19 +319,19 @@ class _LoginPageState extends State<LoginPage>
                                     text: TextSpan(
                                         text: S.of(context).dont_have_account,
                                         style: TextStyle(
-                                                color: AppStyle.secondaryColor,
-                                                fontSize: SizeConfig.h(12))
+                                            color: AppStyle.secondaryColor,
+                                            fontSize: SizeConfig.h(12))
                                             .copyWith(fontFamily: "Almaria"),
                                         children: [
-                                      TextSpan(
-                                          text:
+                                          TextSpan(
+                                              text:
                                               " " + S.of(context).singup + " ",
-                                          style: TextStyle(
+                                              style: TextStyle(
                                                   color: AppStyle.primaryColor,
                                                   fontWeight: FontWeight.bold)
-                                              .copyWith(fontFamily: "Almaria"),
-                                          recognizer: tapGestureRecognizer),
-                                    ])),
+                                                  .copyWith(fontFamily: "Almaria"),
+                                              recognizer: tapGestureRecognizer),
+                                        ])),
                               ],
                             ),
                           ),
@@ -346,22 +358,22 @@ class _LoginPageState extends State<LoginPage>
           children: [
             Expanded(
                 child: Container(
-              height: 1,
-              color: AppStyle.secondaryColor,
-            )),
+                  height: 1,
+                  color: AppStyle.secondaryColor,
+                )),
             Expanded(
                 flex: 2,
                 child: Center(
                     child: Text(
-                  S.of(context).sign_in_with,
-                  style:
+                      S.of(context).sign_in_with,
+                      style:
                       AppStyle.vexa12.copyWith(color: AppStyle.secondaryColor),
-                ))),
+                    ))),
             Expanded(
                 child: Container(
-              height: 1,
-              color: AppStyle.secondaryColor,
-            )),
+                  height: 1,
+                  color: AppStyle.secondaryColor,
+                )),
           ],
         ),
         SizedBox(
@@ -476,11 +488,18 @@ class _LoginPageState extends State<LoginPage>
           height: SizeConfig.h(4),
         ),
         buildTextField(
-            S.of(context).e_mail, Icons.person_outline, emailController,
-            validator: (v) {
+            S.of(context).e_mail + ' / ' + S.of(context).phone_number,
+            Icons.person_outline,
+            emailController, validator: (v) {
           if (v != null) {
-            if (!validEmail(v)) {
-              return S.of(context).emailValidator;
+            if (v.contains(new RegExp(r'[A-Za-z]'))) {
+              if (!validEmail(v)) {
+                return S.of(context).emailValidator;
+              }
+            } else {
+              if (!validPhoneNumber(v)) {
+                return S.of(context).mobileValidator;
+              }
             }
           }
           return null;
@@ -491,10 +510,10 @@ class _LoginPageState extends State<LoginPage>
         buildTextField(
             S.of(context).password, Icons.lock_outline, passwordController,
             validator: (v) {
-          if (v != null && !validPassword(v))
-            return S.of(context).passwordValidator;
-          return null;
-        }, obscureText: true),
+              if (v != null && !validPassword(v))
+                return S.of(context).passwordValidator;
+              return null;
+            }, obscureText: true),
         SizedBox(
           height: SizeConfig.h(15),
         ),
@@ -528,32 +547,110 @@ class _LoginPageState extends State<LoginPage>
           buildTextField(
               S.of(context).fullName, Icons.person_outline, nameController,
               validator: (v) {
-            if (v != null && v.isEmpty) return S.of(context).nameRequired;
-            return null;
-          }),
+                if (v != null && v.isEmpty) return S.of(context).nameRequired;
+                return null;
+              }),
           SizedBox(
             height: SizeConfig.h(15),
           ),
           buildTextField(
               S.of(context).e_mail, Icons.email_outlined, emailController,
               validator: (v) {
-            if (v != null) {
-              if (!validEmail(v)) {
-                return S.of(context).emailValidator;
-              }
-            }
-            return null;
-          }),
+                if (v != null) {
+                  if (!validEmail(v) && v != '') {
+                    return S.of(context).emailValidator;
+                  }
+                }
+                return null;
+              }),
+          SizedBox(
+            height: SizeConfig.h(15),
+          ),
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: IntlPhoneField(
+              searchText: S.of(context).searchHere,
+              initialCountryCode:
+              WidgetsBinding.instance!.window.locale.countryCode,
+              dropdownTextStyle: TextStyle(fontSize: SizeConfig.w(12)),
+              style: TextStyle(fontSize: SizeConfig.w(12)),
+              showCountryFlag: countryCode == '+963' ? false : true,
+              onCountryChanged: (c) {
+                setState(() {
+                  countryCode = '+' + c.dialCode;
+                });
+              },
+              onChanged: (PhoneNumber phoneNumber) {
+                setState(() {
+                  countryCode = phoneNumber.countryCode;
+                  mobile = '0' + phoneNumber.number;
+                });
+              },
+              controller: phoneController,
+              invalidNumberMessage: S.of(context).mobileValidator,
+              // disableLengthCheck: true,
+              // validator: (v) {
+              //   if (v != null) {
+              //     if (!validPhoneNumber(mobile)) {
+              //       return S.of(context).mobileValidator;
+              //     }
+              //   }
+              //   return null;
+              // },
+              decoration: InputDecoration(
+                  hintTextDirection: TextDirection.rtl,
+                  alignLabelWithHint: true,
+                  suffixIcon: Icon(Icons.phone_android),
+                  labelText: S.of(context).phone_number,
+                  contentPadding: EdgeInsets.symmetric(
+                    // vertical: SizeConfig.h(2),
+                    horizontal: SizeConfig.w(10),
+                  ),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1,
+                        style: BorderStyle.solid,
+                        color: AppStyle.primaryColor),
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(100),
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1,
+                        style: BorderStyle.solid,
+                        color: AppStyle.disabledColor),
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(100),
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1,
+                        style: BorderStyle.solid,
+                        color: AppStyle.primaryColor),
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(100),
+                    ),
+                  ),
+                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  labelStyle: TextStyle(
+                    fontSize: SizeConfig.h(14),
+                  ),
+                  errorStyle: TextStyle(fontSize: SizeConfig.h(14)),
+                  fillColor: Colors.white70),
+            ),
+          ),
           SizedBox(
             height: SizeConfig.h(15),
           ),
           buildTextField(
               S.of(context).password, Icons.lock_outline, passwordController,
               validator: (v) {
-            if (v != null && !validPassword(v))
-              return S.of(context).passwordValidator;
-            return null;
-          }, obscureText: true),
+                if (v != null && !validPassword(v))
+                  return S.of(context).passwordValidator;
+                return null;
+              }, obscureText: true),
           SizedBox(
             height: SizeConfig.h(15),
           ),

@@ -92,7 +92,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "By sending a WhatsApp message to the seller containing the basket information without the need to log in"),
         "checkout_whatsapp_tour_title":
             MessageLookupByLibrary.simpleMessage("Purchase cart via WhatsApp"),
+        "choose_value": MessageLookupByLibrary.simpleMessage("Choose value"),
         "city": MessageLookupByLibrary.simpleMessage("City:"),
+        "clear": MessageLookupByLibrary.simpleMessage("Clear"),
         "click_twice":
             MessageLookupByLibrary.simpleMessage("Double click to exit"),
         "code": MessageLookupByLibrary.simpleMessage("Code"),
@@ -114,6 +116,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "create_account":
             MessageLookupByLibrary.simpleMessage("Create an account"),
         "creditCard": MessageLookupByLibrary.simpleMessage("Credit card"),
+        "currency": MessageLookupByLibrary.simpleMessage("Currency"),
         "current_points_balance":
             MessageLookupByLibrary.simpleMessage("current point balance"),
         "danger": MessageLookupByLibrary.simpleMessage("danger"),
@@ -238,6 +241,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paymentMethod": MessageLookupByLibrary.simpleMessage("Payment method"),
         "personalInfo":
             MessageLookupByLibrary.simpleMessage("Personal information"),
+        "phone_number": MessageLookupByLibrary.simpleMessage("Phone number"),
         "please_sign_in":
             MessageLookupByLibrary.simpleMessage("Please sign in"),
         "please_sign_up":
@@ -294,6 +298,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "skip": MessageLookupByLibrary.simpleMessage("Skip"),
         "sort_by": MessageLookupByLibrary.simpleMessage("Sort by"),
         "startNow": MessageLookupByLibrary.simpleMessage("Start now"),
+        "state": MessageLookupByLibrary.simpleMessage("State:"),
         "submit": MessageLookupByLibrary.simpleMessage("Apply"),
         "success": MessageLookupByLibrary.simpleMessage("success"),
         "tajraa_points":

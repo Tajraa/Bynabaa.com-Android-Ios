@@ -24,6 +24,7 @@ import 'Ui/Auth/LoginPage.dart';
 
 class AppRouter {
   static String currentRoute = "/";
+
   static Route<dynamic> generateRoute(RouteSettings settings) {
     currentRoute = settings.name ?? "/";
     switch (settings.name) {
